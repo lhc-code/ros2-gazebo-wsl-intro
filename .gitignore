@@ -1,0 +1,17 @@
+# colcon 산출물 (워크스페이스 안에 clone했을 때 대비)
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+
+# 에디터
+.vscode/
+.idea/
+*.swp
+
+# 내부 메모 (공개 README는 .github/README.md)
+/README.md

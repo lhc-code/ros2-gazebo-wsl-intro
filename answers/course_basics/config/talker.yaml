@@ -1,0 +1,4 @@
+param_talker:
+  ros__parameters:
+    message: "launch 파일에서 넣은 메시지"
+    period: 0.5

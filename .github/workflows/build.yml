@@ -1,0 +1,54 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  colcon:
+    runs-on: ubuntu-24.04
+    container: ros:jazzy
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: src/ros2-gazebo-wsl-intro
+
+      - name: 가이드 코드 ↔ 정답 코드 일치
+        run: python3 src/ros2-gazebo-wsl-intro/archive/check_code_sync.py
+
+      - name: 스크립트 문법
+        run: |
+          bash -n src/ros2-gazebo-wsl-intro/setup/install_ros2_jazzy.sh
+          bash -n src/ros2-gazebo-wsl-intro/setup/check_env.sh
+
+      - name: 의존성 설치
+        run: |
+          apt-get update
+          rosdep update
+          rosdep install --from-paths src --ignore-src -y
+
+      - name: colcon build
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build --event-handlers console_direct+
+
+      - name: URDF 변환 확인
+        run: |
+          source install/setup.bash
+          SHARE=$(ros2 pkg prefix course_robot)/share/course_robot
+          xacro $SHARE/urdf/simple_bot.urdf.xacro > /tmp/bot.urdf
+          xacro $SHARE/urdf/simple_bot.urdf.xacro use_camera:=true > /tmp/bot_cam.urdf
+          grep -q '<robot name="simple_bot"' /tmp/bot.urdf
+          grep -q 'camera_link' /tmp/bot_cam.urdf
+
+      - name: 실행 파일 등록 확인
+        run: |
+          source install/setup.bash
+          for exe in talker listener add_server add_client param_talker turtle_goal; do
+            ros2 pkg executables course_basics | grep -q " $exe$"
+          done
+          ros2 pkg executables course_robot | grep -q " move_1m$"

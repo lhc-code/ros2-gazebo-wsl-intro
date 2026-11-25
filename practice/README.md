@@ -7,6 +7,7 @@
 | [day1_slides/](day1_slides/) | 1일차 (화) | 이론 슬라이드 (트렌드 · 디지털 트윈 · 진로) |
 | [day2_wed.md](day2_wed.md) | 2일차 (수, 오전 3차시) | 터미널 · ROS2 소개 → package 생성 → publisher · subscriber |
 | [day3_thu.md](day3_thu.md) | 3일차 (목, 6차시) | service → parameter · launch → turtlesim → URDF → Gazebo → 1m 이동 |
+| [extra_turtlebot3_slam_nav.md](extra_turtlebot3_slam_nav.md) | 번외 | TurtleBot3 SLAM 지도 만들기 → Nav2 자율주행 `[미검증]` |
 | `docs/image/` | - | 가이드에 쓰는 캡처 |
 
 ## 공통 약속

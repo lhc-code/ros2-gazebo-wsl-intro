@@ -21,13 +21,40 @@ wsl -l -v
 
 ### (선택) WSL 메모리 늘리기
 
-WSL은 기본으로 PC 메모리의 절반만 씁니다. RAM 8GB PC에서 Gazebo가 느리면 `C:\Users\<사용자>\.wslconfig` 파일을 만들고 아래 내용을 넣은 뒤 `wsl --shutdown`으로 재시작합니다.
+WSL은 기본으로 PC 메모리의 절반만 씁니다. RAM 8GB PC에서 Gazebo가 느리면 Windows 쪽 `C:\Users\<사용자>\.wslconfig` 파일에 메모리와 swap(메모리가 모자랄 때 디스크를 임시 메모리로 쓰는 공간) 크기를 적습니다.
 
-```ini
-[wsl2]
-memory=6GB
-swap=4GB
+Ubuntu 터미널
+```bash
+free -h
 ```
+- 현재 값: `Mem`의 `total`이 WSL 메모리, `Swap`의 `total`이 swap 크기입니다. RAM 8GB PC에서는 보통 `3.7Gi`, `1.0Gi`로 나옵니다.
+
+Ubuntu 터미널
+```bash
+ls /mnt/c/Users/
+```
+- 목록에서 자신의 Windows 사용자 이름을 확인합니다. 아래 명령의 `kime`를 그 이름으로 바꿉니다.
+
+Ubuntu 터미널
+```bash
+printf "[wsl2]\nmemory=6GB\nswap=4GB\n" > /mnt/c/Users/kime/.wslconfig
+cat /mnt/c/Users/kime/.wslconfig
+```
+- 성공: `[wsl2]`, `memory=6GB`, `swap=4GB` 세 줄이 출력됨.
+- `memory=6GB` 같은 줄을 터미널에 직접 입력하면 설정되지 않습니다. 반드시 위 명령으로 파일에 씁니다.
+
+Windows PowerShell
+```powershell
+wsl --shutdown
+```
+- 열려 있던 Ubuntu 창은 닫고 새로 엽니다. Ubuntu 안에서 `wsl.exe --shutdown`을 실행하면 창에 깨진 문자가 나올 수 있는데, 창을 닫으면 됩니다.
+
+Ubuntu 터미널
+```bash
+free -h
+```
+- 성공: `Mem` total 약 `5.8Gi`, `Swap` total `4.0Gi`.
+- Windows가 느려지면 `memory=5GB`로 낮춥니다.
 
 ## 2. ROS2 Jazzy + Gazebo Harmonic 설치
 

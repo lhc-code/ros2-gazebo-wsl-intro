@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
-<!-- 2륜 이동 로봇: 몸체(box) + 바퀴 2개 + 앞쪽 캐스터 1개. 단위 m, kg -->
+<!-- Two-wheeled mobile robot: body (box) + 2 wheels + 1 front caster. Units: m, kg -->
 <robot name="simple_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="use_camera" default="false"/>
 
-  <!-- 학생이 바꿔볼 값 -->
+  <!-- Values students can change -->
   <xacro:property name="body_x" value="0.40"/>
   <xacro:property name="body_y" value="0.30"/>
   <xacro:property name="body_z" value="0.10"/>
   <xacro:property name="wheel_r" value="0.06"/>
   <xacro:property name="wheel_w" value="0.04"/>
-  <xacro:property name="wheel_gap" value="0.36"/>  <!-- 두 바퀴 중심 사이 거리 -->
+  <xacro:property name="wheel_gap" value="0.36"/>  <!-- distance between wheel centers -->
 
   <material name="blue"><color rgba="0.1 0.3 0.8 1"/></material>
   <material name="black"><color rgba="0.1 0.1 0.1 1"/></material>
   <material name="gray"><color rgba="0.6 0.6 0.6 1"/></material>
 
-  <!-- base_footprint: 바닥 기준점 -->
+  <!-- base_footprint: reference point on the ground -->
   <link name="base_footprint"/>
 
   <joint name="base_joint" type="fixed">
@@ -44,7 +44,7 @@
     </inertial>
   </link>
 
-  <!-- 바퀴 매크로: side = 1(왼쪽) 또는 -1(오른쪽) -->
+  <!-- Wheel macro: side = 1 (left) or -1 (right) -->
   <xacro:macro name="wheel" params="name side">
     <link name="${name}_wheel">
       <visual>
@@ -75,7 +75,7 @@
   <xacro:wheel name="left" side="1"/>
   <xacro:wheel name="right" side="-1"/>
 
-  <!-- 캐스터: 마찰 없는 공 -->
+  <!-- Caster: frictionless ball -->
   <link name="caster">
     <visual>
       <geometry><sphere radius="${wheel_r/2}"/></geometry>
@@ -99,7 +99,7 @@
     <mu2>0.0</mu2>
   </gazebo>
 
-  <!-- Gazebo Harmonic plugin: 바퀴 구동(cmd_vel → 바퀴), 위치 추정(odom) -->
+  <!-- Gazebo Harmonic plugins: wheel drive (cmd_vel -> wheels), position estimate (odom) -->
   <gazebo>
     <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
       <left_joint>left_wheel_joint</left_joint>
@@ -118,7 +118,7 @@
     </plugin>
   </gazebo>
 
-  <!-- 카메라 (선택): use_camera:=true 일 때만. CPU 렌더링에서는 느려질 수 있음 -->
+  <!-- Camera (optional): only with use_camera:=true. May be slow with CPU rendering -->
   <xacro:if value="$(arg use_camera)">
     <link name="camera_link">
       <visual>

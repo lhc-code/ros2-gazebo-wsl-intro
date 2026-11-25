@@ -23,8 +23,14 @@ sudo locale-gen en_US.UTF-8
 
 echo "== 2/4 ROS2 apt 저장소 =="
 if ! dpkg -s ros2-apt-source >/dev/null 2>&1; then
-  VER=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest \
-        | grep -F '"tag_name"' | awk -F'"' '{print $4}')
+  # 최신 릴리스 페이지로 리다이렉트되는 주소에서 버전만 추출 (GitHub API 요청 제한 회피)
+  VER=$(curl -fsSL -o /dev/null -w '%{url_effective}' \
+        https://github.com/ros-infrastructure/ros-apt-source/releases/latest | sed 's#.*/tag/##')
+  if [[ -z "${VER}" || "${VER}" == http* ]]; then
+    echo "[실패] ros-apt-source 버전을 찾지 못했습니다. github.com 접속을 확인하세요."
+    exit 1
+  fi
+  echo "ros-apt-source ${VER}"
   curl -L -o /tmp/ros2-apt-source.deb \
     "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${VER}/ros2-apt-source_${VER}.${VERSION_CODENAME}_all.deb"
   sudo dpkg -i /tmp/ros2-apt-source.deb

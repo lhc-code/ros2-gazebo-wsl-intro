@@ -1,0 +1,19 @@
+{
+  "name": "ROS2 Jazzy + Gazebo Harmonic (browser desktop)",
+  "image": "mcr.microsoft.com/devcontainers/base:noble",
+  "hostRequirements": { "cpus": 4, "memory": "16gb" },
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "ros2",
+      "webPort": "6080",
+      "vncPort": "5901"
+    }
+  },
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": { "label": "desktop", "onAutoForward": "openPreview" }
+  },
+  "containerEnv": { "LIBGL_ALWAYS_SOFTWARE": "1" },
+  "postCreateCommand": "bash .devcontainer/post_create.sh",
+  "remoteUser": "vscode"
+}

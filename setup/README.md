@@ -11,6 +11,7 @@ wsl --install -d Ubuntu-24.04
 - 설치가 끝나면 PC를 재부팅합니다.
 - 재부팅 후 Ubuntu 창이 뜨면 사용자 이름과 비밀번호를 정합니다. 비밀번호는 입력해도 화면에 표시되지 않습니다.
 - 설치가 `0.0%`에서 멈추면(학교망 등) [학교망 설치 방법](school_network.md)을 따릅니다.
+- 관리자 권한이 없어 WSL을 설치할 수 없으면 [브라우저로 실습하기](codespaces.md)를 따릅니다.
 
 Windows PowerShell
 ```powershell

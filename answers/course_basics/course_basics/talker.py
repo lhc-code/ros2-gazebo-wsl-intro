@@ -12,9 +12,9 @@ class Talker(Node):
 
     def on_timer(self):
         msg = String()
-        msg.data = f'안녕 ROS2 {self.count}'
+        msg.data = f'Hello ROS2 {self.count}'
         self.pub.publish(msg)
-        self.get_logger().info(f'보냄: {msg.data}')
+        self.get_logger().info(f'Sent: {msg.data}')
         self.count += 1
 
 

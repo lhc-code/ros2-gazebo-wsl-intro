@@ -160,9 +160,9 @@ class Talker(Node):
 
     def on_timer(self):
         msg = String()
-        msg.data = f'안녕 ROS2 {self.count}'
+        msg.data = f'Hello ROS2 {self.count}'
         self.pub.publish(msg)
-        self.get_logger().info(f'보냄: {msg.data}')
+        self.get_logger().info(f'Sent: {msg.data}')
         self.count += 1
 
 
@@ -202,7 +202,7 @@ class Listener(Node):
         self.sub = self.create_subscription(String, 'chatter', self.on_msg, 10)
 
     def on_msg(self, msg):  # 메시지가 도착할 때마다 실행
-        self.get_logger().info(f'받음: {msg.data}')
+        self.get_logger().info(f'Received: {msg.data}')
 
 
 def main():
@@ -253,7 +253,7 @@ Ubuntu 터미널 ② (새 창)
 ```bash
 ros2 run my_first_pkg listener
 ```
-- 성공: ①에 `보냄: 안녕 ROS2 0, 1, 2 ...`, ②에 `받음: ...`이 같은 번호로 출력됨.
+- 성공: ①에 `Sent: Hello ROS2 0, 1, 2 ...`, ②에 `Received: ...`이 같은 번호로 출력됨.
 
 ### 3-5. 명령어로 topic 다루기
 
@@ -269,9 +269,10 @@ talker를 끄고(① `Ctrl + C`) 직접 메시지를 보내봅니다.
 
 Ubuntu 터미널 ①
 ```bash
-ros2 topic pub --once /chatter std_msgs/msg/String "{data: '직접 보낸 메시지'}"
+ros2 topic pub --once /chatter std_msgs/msg/String "{data: 'Hello from terminal'}"
 ```
-- 성공: ② listener에 `받음: 직접 보낸 메시지`.
+- 성공: ② listener에 `Received: Hello from terminal`.
+- ② listener가 켜져 있어야 보냅니다. listener가 없으면 `Waiting for at least 1 matching subscription(s)...`만 반복됩니다.
 
 **확인 질문**: talker 주기를 1초로 바꾸려면 어느 줄을 고치나요?
 <details><summary>답</summary>

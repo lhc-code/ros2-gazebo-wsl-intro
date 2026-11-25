@@ -9,7 +9,7 @@ class Listener(Node):
         self.sub = self.create_subscription(String, 'chatter', self.on_msg, 10)
 
     def on_msg(self, msg):  # 메시지가 도착할 때마다 실행
-        self.get_logger().info(f'받음: {msg.data}')
+        self.get_logger().info(f'Received: {msg.data}')
 
 
 def main():
